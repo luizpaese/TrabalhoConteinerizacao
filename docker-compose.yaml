@@ -12,8 +12,7 @@ services:
       - FLASK_DB_PORT="5432"
     depends_on:
       - database
-#    ports:
-#      - "5000"
+    restart: always
     networks:
       - webnet
 
@@ -34,6 +33,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./database/:/var/lib/postgresql/data
+    restart: always
     ports:
       - "5432:5432"
     networks:
