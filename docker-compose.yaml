@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  backend:
+    build: backend
+    environment:
+      - FLASK_APP=run.py
+      - FLASK_DB_TYPE="postgres"
+      - FLASK_DB_USER="postgres"
+      - FLASK_DB_NAME="postgres"
+      - FLASK_DB_PASSWORD="exemplo"
+      - FLASK_DB_HOST="database"
+      - FLASK_DB_PORT="5432"
+    depends_on:
+      - database
+#    ports:
+#      - "5000"
+    networks:
+      - webnet
+
+  frontend:
+    build: frontend
+    depends_on:
+      - backend
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - webnet
+
+  database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: exemplo
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./database/:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - webnet
+
+networks:
+  webnet:
